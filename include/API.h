@@ -1066,6 +1066,7 @@ void set_speed(CP::CutPursuit<T> * cp, const T speed, const T weight_decay, cons
         cp->parameter.max_ite_main = 15;
         cp->parameter.backward_step = true;
         cp->parameter.stopping_ratio = 0.05;
+        cp->parameter.verbose = 2;
     }
     if (speed == 3)
     {
@@ -1080,6 +1081,7 @@ void set_speed(CP::CutPursuit<T> * cp, const T speed, const T weight_decay, cons
         cp->parameter.max_ite_main = 5;
         cp->parameter.backward_step = false;
         cp->parameter.stopping_ratio = 0.1;
+        cp->parameter.verbose = 2;
     }
     if (speed == 2)
     {
@@ -1094,6 +1096,7 @@ void set_speed(CP::CutPursuit<T> * cp, const T speed, const T weight_decay, cons
         cp->parameter.max_ite_main = 5;
         cp->parameter.backward_step = true;
         cp->parameter.stopping_ratio = 0.05;
+        cp->parameter.verbose = 2;
     }
     else if (speed == 0)
     {
@@ -1108,6 +1111,7 @@ void set_speed(CP::CutPursuit<T> * cp, const T speed, const T weight_decay, cons
         cp->parameter.max_ite_main = 20;
         cp->parameter.backward_step = true;
         cp->parameter.stopping_ratio = 0.001;
+        cp->parameter.verbose = 2;
     }
     else if (speed == 1)
     {
@@ -1122,6 +1126,7 @@ void set_speed(CP::CutPursuit<T> * cp, const T speed, const T weight_decay, cons
         cp->parameter.max_ite_main = 10;
         cp->parameter.backward_step = true;
         cp->parameter.stopping_ratio = 0.01;
+        cp->parameter.verbose = 2;
     }
 }
 }
