@@ -90,7 +90,7 @@ struct to_py_tuple_list
 };
 
 PyObject * cutpursuit(const bpn::ndarray & obs, const bpn::ndarray & source, const bpn::ndarray & target,const bpn::ndarray & edge_weight,
-                      float lambda, const int cutoff, const int spatial, float weight_decay)
+                      float lambda, const int cutoff, const int spatial, float weight_decay, float speed)
 {//read data and run the L0-cut pursuit partition algorithm
     srand(0);
 
@@ -109,18 +109,18 @@ PyObject * cutpursuit(const bpn::ndarray & obs, const bpn::ndarray & source, con
     if (spatial == 0)
     {
         CP::cut_pursuit<float>(n_ver, n_edg, n_obs, obs_data, source_data, target_data, edge_weight_data, &node_weight[0]
-                 , solution.data(), in_component, components, lambda, (uint32_t)cutoff,  1.f, 4.f, weight_decay, 0.f);
+                 , solution.data(), in_component, components, lambda, (uint32_t)cutoff,  1.f, speed, weight_decay, 0.f);
     }
     else
     {
         CP::cut_pursuit<float>(n_ver, n_edg, n_obs, obs_data, source_data, target_data, edge_weight_data, &node_weight[0]
-                 , solution.data(), in_component, components, lambda, (uint32_t)cutoff,  2.f, 4.f, weight_decay, 0.f);
+                 , solution.data(), in_component, components, lambda, (uint32_t)cutoff,  2.f, speed, weight_decay, 0.f);
     }
     return to_py_tuple::convert(Custom_tuple(components, in_component));
 }
 
 PyObject * cutpursuit_hierarchy(const bpn::ndarray & obs, const bpn::ndarray & source, const bpn::ndarray & target, const bpn::ndarray & edge_weight,
-                      const bpn::ndarray & lambda, const bpn::ndarray & cutoff, const int spatial, float weight_decay)
+                      const bpn::ndarray & lambda, const bpn::ndarray & cutoff, const int spatial, float weight_decay, float speed)
 {//read data and run the L0-cut pursuit partition algorithm
     srand(0);
     uint32_t n_ver = bp::len(obs);
@@ -154,14 +154,14 @@ PyObject * cutpursuit_hierarchy(const bpn::ndarray & obs, const bpn::ndarray & s
             CP::cut_pursuit<float>(n_ver, n_edg, n_obs, obs_data, source_data, target_data, edge_weight_data, &node_weight[0]
                      , solution.data(), in_component, components
                      , n_nodes_red, n_edges_red, Eu_red, Ev_red, edgeWeight_red, nodeWeight_red
-                     , lambda_data[ite_hierarchy], (uint32_t)cutoff_data[ite_hierarchy],  1.f, 4.f, weight_decay, 0.f);
+                     , lambda_data[ite_hierarchy], (uint32_t)cutoff_data[ite_hierarchy],  1.f, speed, weight_decay, 0.f);
         }
         else
         {
             CP::cut_pursuit<float>(n_ver, n_edg, n_obs, obs_data, source_data, target_data, edge_weight_data, &node_weight[0]
                      , solution.data(), in_component, components
                      , n_nodes_red, n_edges_red, Eu_red, Ev_red, edgeWeight_red, nodeWeight_red
-                     , lambda_data[ite_hierarchy], (uint32_t)cutoff_data[ite_hierarchy],  2.f, 4.f, weight_decay, 0.f);
+                     , lambda_data[ite_hierarchy], (uint32_t)cutoff_data[ite_hierarchy],  2.f, speed, weight_decay, 0.f);
         }
         n_ver = n_nodes_red;
         n_edg = n_edges_red;
@@ -187,7 +187,7 @@ PyObject * cutpursuit_hierarchy(const bpn::ndarray & obs, const bpn::ndarray & s
 }
 
 PyObject * cutpursuit2(const bpn::ndarray & obs, const bpn::ndarray & source, const bpn::ndarray & target,const bpn::ndarray & edge_weight,
-                       const bpn::ndarray & node_weight, float lambda)
+                       const bpn::ndarray & node_weight, float lambda, float speed)
 {//read data and run the L0-cut pursuit partition algorithm
     srand(0);
     const uint32_t n_ver = bp::len(obs);
@@ -204,7 +204,7 @@ PyObject * cutpursuit2(const bpn::ndarray & obs, const bpn::ndarray & source, co
     std::vector<uint32_t> in_component(n_ver,0);
     std::vector< std::vector<uint32_t> > components(1,std::vector<uint32_t>(1,0.f));
     CP::cut_pursuit<float>(n_ver, n_edg, n_obs, obs_data, source_data, target_data, edge_weight_data, node_weight_data
-                 , solution.data(), in_component, components, lambda, (uint32_t)0,  2.f, 4.f, 1.f, 1.f);
+                 , solution.data(), in_component, components, lambda, (uint32_t)0,  2.f, speed, 1.f, 1.f);
     return to_py_tuple::convert(Custom_tuple(components, in_component));
 }
 
@@ -216,8 +216,8 @@ BOOST_PYTHON_MODULE(libcp)
     bp::to_python_converter< Custom_tuple, to_py_tuple>();
     
     def("cutpursuit", cutpursuit);
-    def("cutpursuit", cutpursuit, (bp::args("cutoff")=0, bp::args("spatial")=0, bp::args("weight_decay")=1));
-    def("cutpursuit_hierarchy", cutpursuit_hierarchy, (bp::args("cutoff")=0, bp::args("spatial")=0, bp::args("weight_decay")=1));
+    def("cutpursuit", cutpursuit, (bp::args("cutoff")=0, bp::args("spatial")=0, bp::args("weight_decay")=1, bp::args("speed")=4));
+    def("cutpursuit_hierarchy", cutpursuit_hierarchy, (bp::args("cutoff")=0, bp::args("spatial")=0, bp::args("weight_decay")=1, bp::args("speed")=4)));
     def("cutpursuit2", cutpursuit2);
 }
 
