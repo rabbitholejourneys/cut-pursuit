@@ -217,7 +217,7 @@ BOOST_PYTHON_MODULE(libcp)
     
     def("cutpursuit", cutpursuit);
     def("cutpursuit", cutpursuit, (bp::args("cutoff")=0, bp::args("spatial")=0, bp::args("weight_decay")=1, bp::args("speed")=4));
-    def("cutpursuit_hierarchy", cutpursuit_hierarchy, (bp::args("cutoff")=0, bp::args("spatial")=0, bp::args("weight_decay")=1, bp::args("speed")=4)));
+    def("cutpursuit_hierarchy", cutpursuit_hierarchy, (bp::args("cutoff")=0, bp::args("spatial")=0, bp::args("weight_decay")=1, bp::args("speed")=4));
     def("cutpursuit2", cutpursuit2);
 }
 
